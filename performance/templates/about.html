@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>About - Student Performance Tracker</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f4f9;
+            padding: 30px;
+            color: #333;
+        }
+
+        h1 {
+            color: #004aad;
+            margin-bottom: 10px;
+        }
+
+        p {
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #004aad;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .back-button:hover {
+            background-color: #003080;
+        }
+    </style>
+</head>
+<body>
+    <h1>About This Project</h1>
+    <p>
+        Welcome to the <strong>Student Performance Tracker</strong>!<br><br>
+        This Django-based system allows students to analyze their academic performance dynamically using data from an Excel sheet.
+        The features include:
+    </p>
+    <ul>
+        <li>📊 View complete student data from the dataset</li>
+        <li>🚨 Detect slow learners based on percentage</li>
+        <li>📉 Identify weak subjects and visualize them using pie charts</li>
+        <li>📚 Provide explanations and examples for difficult topics</li>
+        <li>⏱ Countdown preparation timer with email reminders</li>
+        <li>📝 Conduct quizzes based on the weak topic</li>
+        <li>📧 Notify parents via email if performance doesn’t improve</li>
+    </ul>
+    <p>This application is designed to provide academic support and ensure student progress with intelligent suggestions.</p>
+
+    <a href="{% url 'home' %}" class="back-button">⬅ Go Back to Home</a>
+</body>
+</html>

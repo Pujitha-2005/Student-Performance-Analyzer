@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #f7f7f7;
+            text-align: center;
+        }
+        .welcome {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 40px;
+            color: #333;
+        }
+        .btn {
+            display: block;
+            width: 260px;
+            margin: 15px auto;
+            padding: 14px;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            border-radius: 6px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .logout-btn {
+            background-color: #dc3545;
+        }
+        .logout-btn:hover {
+            background-color: #a71d2a;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="welcome">
+        Welcome {{ username }}
+    </div>
+
+    <a href="{% url 'enter_rollno' %}" class="btn">🎓 View Performance</a>
+    <a href="{% url 'view_details' %}" class="btn">📊 View Details</a>
+    <a href="{% url 'view_slow_learners' %}" class="btn">🐢 View Slow Learners List</a>
+
+    <form action="{% url 'logout_user' %}" method="post" style="margin-top: 40px;">
+        {% csrf_token %}
+        <button type="submit" class="btn logout-btn">🚪 Logout</button>
+    </form>
+
+</body>
+</html>

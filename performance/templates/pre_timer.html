@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5 text-center">
+  <h2 class="mb-4">🧪 Exam Preparation</h2>
+
+  <p><strong>We are conducting an exam for you.</strong></p>
+  <p><strong>Student Email:</strong> {{ student_email }}</p>
+  <p><strong>Parent Email:</strong> {{ parent_email }}</p>
+
+  <!-- Preparation Time Selection -->
+  <form id="prep-form">
+    <label for="prep-time"><strong>How much time do you need to prepare?</strong></label>
+    <select id="prep-time" class="form-select w-25 mx-auto my-3">
+      <option value="" selected disabled>Select time</option>
+      <option value="1">1 minutes</option>
+      <option value="5">5 minutes</option>
+      <option value="10">10 minutes</option>
+      <option value="15">15 minutes</option>
+    </select>
+    <button type="button" id="start-prep" class="btn btn-primary">Start Preparation</button>
+  </form>
+
+  <!-- Countdown Timer -->
+  <div id="timer-box" class="mt-4" style="display:none;">
+    <h5 id="countdown">⏳ Time Remaining: --</h5>
+
+    <form method="post" action="{% url 'start_assessment' %}">
+      {% csrf_token %}
+      <button id="start-btn" type="submit" class="btn btn-success mt-3" disabled>Start Assessment</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  let prepTimeDropdown = document.getElementById("prep-time");
+  let startPrepBtn = document.getElementById("start-prep");
+  let countdownEl = document.getElementById("countdown");
+  let timerBox = document.getElementById("timer-box");
+  let startAssessmentBtn = document.getElementById("start-btn");
+
+  startPrepBtn.addEventListener("click", function () {
+    let selectedTime = prepTimeDropdown.value;
+
+    if (!selectedTime) {
+      alert("Please select a preparation time.");
+      return;
+    }
+
+    let prepMinutes = parseInt(selectedTime);
+    let duration = prepMinutes * 60 * 1000; // in milliseconds
+    let endTime = new Date().getTime() + duration;
+
+    timerBox.style.display = "block";
+    countdownEl.innerHTML = "⏳ Starting timer...";
+
+    const timer = setInterval(function () {
+      let now = new Date().getTime();
+      let remaining = endTime - now;
+
+      if (remaining <= 0) {
+        clearInterval(timer);
+        countdownEl.innerHTML = "⏰ Time's up! You can now start the assessment.";
+        startAssessmentBtn.disabled = false;
+        startAssessmentBtn.classList.remove("btn-success");
+        startAssessmentBtn.classList.add("btn-primary");
+      } else {
+        let minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+        countdownEl.innerHTML = `⏳ Time Remaining: ${minutes}m ${seconds}s`;
+      }
+    }, 1000);
+  });
+</script>
+{% endblock %}

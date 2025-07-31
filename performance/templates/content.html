@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-primary">Explanation for: {{ topic }}</h2>
+    
+    <div class="card mt-3 mb-3">
+        <div class="card-body">
+            <pre style="white-space: pre-wrap; font-size: 16px;">{{ explanation }}</pre>
+        </div>
+    </div>
+
+    <h5>Did you understand this explanation?</h5>
+
+    <form method="post" action="{% url 'confirm_understanding' %}" class="d-inline">
+        {% csrf_token %}
+        <input type="hidden" name="understood" value="yes">
+        <button type="submit" class="btn btn-success">Yes</button>
+    </form>
+
+    <form method="post" action="{% url 'confirm_understanding' %}" class="d-inline">
+        {% csrf_token %}
+        <input type="hidden" name="understood" value="no">
+        <button type="submit" class="btn btn-danger">No</button>
+    </form>
+</div>
+{% endblock %}

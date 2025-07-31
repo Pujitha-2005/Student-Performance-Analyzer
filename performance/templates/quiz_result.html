@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %} {# <-- ADD THIS LINE #}
+
+{% block content %}
+<div class="container my-5 py-5">
+    <div class="card shadow-lg border-0 rounded-lg mx-auto quiz-result-card">
+        <div class="card-header bg-gradient-result text-white text-center py-4 rounded-top">
+            <h2 class="mb-0 display-5 font-weight-bold">
+                🎉 Quiz Results on <span class="text-warning-light">"{{ topic|title }}"</span>
+            </h2>
+            <p class="lead mb-0 mt-2">See how you performed!</p>
+        </div>
+        <div class="card-body p-5 text-center">
+            <h3 class="mb-4 display-4 result-score animate-score">{{ percentage }}%</h3>
+            <p class="fs-5 text-muted">You scored **{{ score }} out of {{ total }}** questions correctly.</p>
+
+            <p class="fs-4 mt-4 mb-4 result-message">{{ message }}</p>
+
+            {% if wrong_answers %}
+                <h4 class="mt-5 mb-3 text-danger-emphasis">Review Your Wrong Answers:</h4>
+                <div class="list-group text-start">
+                    {% for wa in wrong_answers %}
+                        <div class="list-group-item list-group-item-danger mb-3 shadow-sm rounded-lg animate-fade-in">
+                            <p class="mb-1"><strong>Q:</strong> {{ wa.question }}</p>
+                            <p class="mb-1"><strong>Your Answer:</strong> <span class="text-danger">{{ wa.selected_answer|default:"(Not answered)" }}</span></p>
+                            <p class="mb-0"><strong>Correct Answer:</strong> <span class="text-success">{{ wa.correct_answer }}</span></p>
+                            {% if wa.options %}
+                                <small class="text-muted">Options: {% for opt in wa.options %}{{ forloop.counter|to_alpha }}. {{ opt }}{% if not forloop.last %}, {% endif %}{% endfor %}</small> {# <-- CHANGED HERE #}
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="fs-5 text-success-emphasis mt-5">🌟 Excellent! You answered all questions correctly!</p>
+            {% endif %}
+
+            <div class="mt-5">
+                <a href="{% url 'dashboard' %}" class="btn btn-secondary btn-lg shadow-sm animate-button-back">
+                    🏠 Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# Custom CSS for professional & attractive styling #}
+<style>
+    body {
+        background-color: #f8f9fa; /* Light grey background */
+        font-family: 'Open Sans', sans-serif; /* Modern font */
+    }
+    .quiz-result-card {
+        border-radius: 15px;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+        overflow: hidden;
+    }
+    .card-header {
+        border-bottom: none;
+        border-radius: 15px 15px 0 0;
+    }
+    .bg-gradient-result {
+        background: linear-gradient(135deg, #1abc9c 0%, #3498db 100%); /* Teal to Blue Gradient */
+    }
+    .display-5 {
+        font-size: 2.5rem;
+        letter-spacing: 0.8px;
+    }
+    .text-warning-light {
+        color: #ffeb3b !important;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    }
+    .lead {
+        font-size: 1.15rem;
+        opacity: 0.9;
+    }
+    .result-score {
+        font-size: 4.5rem; /* Very large for score */
+        font-weight: 700;
+        color: #28a745; /* Green for success */
+        text-shadow: 3px 3px 6px rgba(40, 167, 69, 0.2);
+    }
+    .result-message {
+        font-size: 1.6rem;
+        font-weight: 600;
+        color: #343a40;
+    }
+    .text-danger-emphasis {
+        color: #dc3545 !important;
+        font-weight: 600;
+        font-size: 1.7rem;
+    }
+    .text-success-emphasis {
+        color: #28a745 !important;
+        font-weight: 600;
+        font-size: 1.7rem;
+    }
+    .list-group-item-danger {
+        background-color: #fcebeb; /* Very light red for wrong answers */
+        border-color: #f5c6cb;
+        padding: 1rem 1.5rem;
+    }
+    .list-group-item-danger p {
+        margin-bottom: 0.3rem;
+    }
+    .list-group-item-danger strong {
+        color: #333;
+    }
+    .list-group-item-danger span {
+        font-weight: 500;
+    }
+    .text-danger {
+        color: #dc3545 !important;
+    }
+    .text-success {
+        color: #28a745 !important;
+    }
+
+    /* Animations */
+    .animate-score {
+        animation: scaleIn 0.8s ease-out;
+    }
+    @keyframes scaleIn {
+        from { opacity: 0; transform: scale(0.8); }
+        to { opacity: 1; transform: scale(1); }
+    }
+    .animate-fade-in {
+        animation: fadeIn 0.8s ease-out;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-button-back {
+        animation: bounceIn 1.5s ease-out;
+    }
+    @keyframes bounceIn {
+        0%, 20%, 40%, 60%, 80%, 100% {
+            transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+        }
+        0% { opacity: 0; transform: scale3d(0.3, 0.3, 0.3); }
+        20% { transform: scale3d(1.1, 1.1, 1.1); }
+        40% { transform: scale3d(0.9, 0.9, 0.9); }
+        60% { opacity: 1; transform: scale3d(1.03, 1.03, 1.03); }
+        80% { transform: scale3d(0.97, 0.97, 0.97); }
+        100% { opacity: 1; transform: scale3d(1, 1, 1); }
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        font-weight: bold;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        padding: 0.8rem 2rem;
+        border-radius: 8px;
+        font-size: 1.25rem;
+    }
+    .btn-secondary:hover {
+        background-color: #5a6268;
+        border-color: #545b62;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 15px rgba(108, 117, 125, 0.3);
+    }
+    .btn-secondary:active {
+        transform: translateY(0);
+        box-shadow: none;
+    }
+</style>
+{% endblock %}

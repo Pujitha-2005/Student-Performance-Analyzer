@@ -1,0 +1,12 @@
+<!-- templates/ask_suggestions.html -->
+{% extends 'base.html' %}
+{% block content %}
+  <h2>You're not a slow learner! 🎉</h2>
+  <p>Do you want any suggestions or help on any topic?</p>
+
+  <form method="POST" action="{% url 'handle_suggestion_response' %}">
+    {% csrf_token %}
+    <button type="submit" name="want_suggestions" value="yes">Yes, please!</button>
+    <button type="submit" name="want_suggestions" value="no">No, thanks</button>
+  </form>
+{% endblock %}

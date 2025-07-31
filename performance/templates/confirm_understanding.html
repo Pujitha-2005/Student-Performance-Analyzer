@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">📘 Explanation for: <span class="text-primary">{{ topic|title }}</span></h2>
+
+    {% if error %}
+        <div class="alert alert-danger mt-4 text-center">{{ error }}</div>
+    {% endif %}
+
+    {% if explanation %}
+        <div class="card mt-4 shadow p-3">
+            <pre style="white-space: pre-wrap; font-size: 16px;">{{ explanation }}</pre>
+        </div>
+    {% endif %}
+
+    {% if show_email_form %}
+        <form method="POST" class="mt-4">
+            {% csrf_token %}
+            <input type="hidden" name="topic" value="{{ topic }}">
+            <input type="hidden" name="understood" value="yes">
+            <input type="hidden" name="explanation" value="{{ explanation }}">
+
+            <div class="mb-3">
+                <label>Student Email ID:</label>
+                <input type="email" name="student_email" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Parent Email ID:</label>
+                <input type="email" name="parent_email" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">📩 Submit</button>
+        </form>
+    {% else %}
+        <form method="POST" class="mt-3">
+            {% csrf_token %}
+            <input type="hidden" name="topic" value="{{ topic }}">
+            <input type="hidden" name="explanation" value="{{ explanation }}">
+
+            <p class="mt-3">Did you understand the explanation?</p>
+            <button type="submit" name="understood" value="no" class="btn btn-warning me-2">🔄 No, explain again</button>
+            <button type="submit" name="understood" value="yes" class="btn btn-success">✅ Yes, I understand</button>
+        </form>
+    {% endif %}
+
+    <div class="text-center mt-5">
+        <a href="{% url 'dashboard' %}" class="btn btn-secondary">🏠 Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

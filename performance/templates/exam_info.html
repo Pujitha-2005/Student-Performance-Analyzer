@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5 text-center">
+  <h2>🕒 Select Your Preparation Time</h2>
+
+  <!-- Timer Form -->
+  <form id="timerForm">
+    <label for="prep_time">Choose Time (in minutes):</label>
+    <select id="prep_time" class="form-select w-25 mx-auto my-3">
+      <option value="1">1 minute</option>
+      <option value="2">2 minutes</option>
+      <option value="5">5 minutes</option>
+      <option value="10">10 minutes</option>
+    </select>
+    <button type="button" class="btn btn-primary" onclick="startTimer()">Start Countdown</button>
+  </form>
+
+  <!-- Countdown display -->
+  <h3 class="mt-4">⏳ Time Remaining: <span id="countdown">--:--</span></h3>
+
+  <!-- Assessment Form -->
+  <form action="{% url 'start_quiz' %}" method="get">
+    <!-- Store prep time if needed -->
+    <input type="hidden" name="prep_time" id="hidden_prep_time" value="">
+    <button id="startAssessmentBtn" class="btn btn-success mt-4" disabled>Start Assessment</button>
+  </form>
+</div>
+
+<script>
+  let countdownInterval;
+
+  function startTimer() {
+    // Clear previous interval if any
+    if (countdownInterval) {
+      clearInterval(countdownInterval);
+    }
+
+    const minutes = parseInt(document.getElementById("prep_time").value);
+    const endTime = new Date().getTime() + minutes * 60000;
+
+    const countdownEl = document.getElementById("countdown");
+    const startBtn = document.getElementById("startAssessmentBtn");
+
+    // Store the prep time in hidden input
+    document.getElementById("hidden_prep_time").value = minutes;
+
+    startBtn.disabled = true;
+
+    countdownInterval = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = endTime - now;
+
+      const mins = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const secs = Math.floor((distance % (1000 * 60)) / 1000);
+
+      countdownEl.innerText = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+
+      if (distance <= 0) {
+        clearInterval(countdownInterval);
+        countdownEl.innerText = "00:00";
+        startBtn.disabled = false;
+      }
+    }, 1000);
+  }
+
+  // Reset countdown if time is changed
+  document.getElementById("prep_time").addEventListener("change", () => {
+    clearInterval(countdownInterval);
+    document.getElementById("countdown").innerText = "--:--";
+    document.getElementById("startAssessmentBtn").disabled = true;
+    document.getElementById("hidden_prep_time").value = "";
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5 py-5"> {# Added vertical padding for spacing #}
+    <div class="card shadow-lg border-0 rounded-lg mx-auto" style="max-width: 600px;"> {# Professional card style #}
+        <div class="card-header bg-gradient-primary text-white text-center py-4 rounded-top"> {# Stylish header with gradient #}
+            <h2 class="mb-0 display-4 font-weight-bold">
+                <i class="fas fa-hourglass-half"></i> Exam Prep Countdown
+            </h2>
+            <p class="lead mb-0 mt-2">Get ready for your personalized assessment!</p>
+        </div>
+        <div class="card-body p-5 text-center"> {# Generous padding and centered content #}
+            <p class="mb-3 fs-5 text-muted">Your email details for communication:</p>
+            <div class="email-info mb-4 p-3 border rounded bg-light"> {# Styled box for emails #}
+                <p class="mb-1"><strong>Student Email:</strong> <span class="text-primary">{{ student_email }}</span></p>
+                <p class="mb-0"><strong>Parent Email:</strong> <span class="text-info">{{ parent_email }}</span></p>
+            </div>
+
+            <h3 class="mt-4 mb-3 fs-4 text-dark-emphasis">Time Until Assessment Starts:</h3>
+
+            <div id="countdown" class="display-3 fw-bold my-4 text-gradient-countdown animate-pulse">
+                Loading...
+            </div>
+
+            <form method="post" action="{% url 'start_quiz' %}"> {# Changed action to start_quiz based on views.py #}
+                {% csrf_token %}
+                <button type="submit" id="startBtn" class="btn btn-success btn-lg shadow-sm w-75 animate-button" disabled>
+                    <i class="fas fa-play-circle me-2"></i> Start Assessment
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const countdownElement = document.getElementById("countdown");
+    const startBtn = document.getElementById("startBtn");
+
+    // Ensure start_time is passed correctly from Django context.
+    // If it's a string from Python's datetime.date:'Y-m-d H:i:s', it should be fine.
+    // Ensure `start_time` is available in the Django context when rendering this template.
+    // For testing, you might mock it in views.py:
+    // from datetime import datetime, timedelta
+    // ...
+    // def start_prep_timer(request):
+    //     # For demo, set start_time to 1 minute from now
+    //     future_time = datetime.now() + timedelta(minutes=1)
+    //     # Make sure to include 'start_time': future_time in your context
+    //     return render(request, 'pre_timer.html', {..., 'start_time': future_time})
+    // ...
+
+    // Correctly parse the date string. Using a fallback for robustness.
+    const endTimeStr = "{{ start_time|date:'Y-m-d H:i:s' }}";
+    const endTime = new Date(endTimeStr.replace(/-/g, '/')).getTime(); // Replace - with / for better cross-browser compatibility
+
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const diff = endTime - now;
+
+        if (diff <= 0) {
+            countdownElement.innerHTML = "<span class='text-success'>⏱ Time's up! You can now start the assessment.</span>";
+            startBtn.disabled = false;
+            // Stop updating once time is up
+            clearInterval(countdownInterval);
+        } else {
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            countdownElement.innerHTML = `${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m ${seconds.toString().padStart(2, '0')}s`;
+            startBtn.disabled = true;
+        }
+    }
+
+    // Call immediately to avoid "Loading..." state
+    updateCountdown();
+    const countdownInterval = setInterval(updateCountdown, 1000);
+</script>
+
+{# Custom CSS for professional & attractive styling #}
+<style>
+    body {
+        background-color: #f8f9fa; /* Lighter background */
+        font-family: 'Open Sans', sans-serif; /* Modern font */
+    }
+    .card {
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+    .card-header {
+        border-bottom: none;
+        border-radius: 15px 15px 0 0;
+    }
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); /* Deep purple to blue gradient */
+    }
+    .display-4 {
+        font-size: 2.5rem;
+        letter-spacing: 0.8px;
+    }
+    .lead {
+        font-size: 1.15rem;
+        opacity: 0.9;
+    }
+    .email-info {
+        background-color: #e9f2ff; /* Light blue background for email info */
+        border: 1px solid #cce5ff;
+        border-radius: 8px;
+        font-size: 1.05rem;
+    }
+    .email-info p {
+        margin-bottom: 0.5rem; /* Space between email lines */
+    }
+    .text-primary {
+        color: #007bff !important; /* Bootstrap primary blue */
+    }
+    .text-info {
+        color: #17a2b8 !important; /* Bootstrap info cyan */
+    }
+    .text-dark-emphasis {
+        color: #343a40; /* Darker text for emphasis */
+        font-weight: 600;
+    }
+    .display-3 {
+        font-size: 3.5rem; /* Larger for impact */
+        letter-spacing: 2px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+    .text-gradient-countdown {
+        background: linear-gradient(45deg, #ff6b6b, #ffa500, #ffec6b); /* Red-Orange-Yellow gradient */
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 200% auto; /* For animation effect */
+        animation: gradient-animation 4s linear infinite;
+    }
+    @keyframes gradient-animation {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    .animate-pulse {
+        animation: pulse-effect 2s infinite ease-in-out;
+    }
+    @keyframes pulse-effect {
+        0% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.02); opacity: 0.9; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+        font-weight: bold;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        padding: 0.8rem 2rem;
+        border-radius: 8px;
+        font-size: 1.25rem; /* Larger font size for button */
+    }
+    .btn-success:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 15px rgba(40, 167, 69, 0.3);
+    }
+    .btn-success:active {
+        transform: translateY(0);
+        box-shadow: none;
+    }
+    .w-75 { /* Adjusted button width for better appearance */
+        width: 75% !important;
+        max-width: 300px; /* Cap maximum width */
+    }
+</style>
+{% endblock %}

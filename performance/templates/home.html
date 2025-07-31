@@ -1,0 +1,55 @@
+<!-- student_performance/performance/templates/analyzer/home.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome - Student Performance Tracker</title>
+    <style>
+        body {
+            background: #f2f2f2;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            padding-top: 100px;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 40px;
+            color: #2c3e50;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🎓 Welcome to Student Performance Tracker</h1>
+
+    <div class="btn-container">
+        <a href="{% url 'home' %}" class="btn">Home</a>
+        <a href="{% url 'about' %}" class="btn">About</a>
+        <a href="{% url 'login_user' %}" class="btn">Login</a>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Performance Overview</title>
+</head>
+<body>
+    <h2>Welcome</h2>
+
+    {% if is_slow %}
+        <p style="color: red;">⚠️ You are identified as a slow learner based on your overall percentage.</p>
+        {% if weak_subjects %}
+            <p>📉 Your weak subjects are:</p>
+            <ul>
+                {% for subject in weak_subjects %}
+                    <li>{{ subject }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No weak subjects found (below 40 marks).</p>
+        {% endif %}
+    {% else %}
+        <p style="color: green;">✅ Great! You are doing well overall. Keep it up!</p>
+    {% endif %}
+
+    <br>
+    <a href="{% url 'dashboard' %}">Go to Dashboard</a>
+</body>
+</html>

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow p-4">
+        <h2 class="text-center mb-4">📝 Exam Information</h2>
+
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th>Roll Number</th>
+                    <td>{{ exam_info.roll_no }}</td>
+                </tr>
+                <tr>
+                    <th>Topic</th>
+                    <td>{{ exam_info.topic }}</td>
+                </tr>
+                <tr>
+                    <th>Start Time</th>
+                    <td>{{ exam_info.start_time }}</td>
+                </tr>
+                <tr>
+                    <th>Duration</th>
+                    <td>{{ exam_info.duration }} minutes</td>
+                </tr>
+                <tr>
+                    <th>Total Questions</th>
+                    <td>{{ exam_info.total_questions }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="text-center mt-4">
+            <a href="{% url 'start_assessment' %}" class="btn btn-primary btn-lg">
+                🚀 Start Quiz
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

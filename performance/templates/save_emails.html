@@ -1,0 +1,18 @@
+<!-- analyzer/templates/analyzer/save_emails.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Enter Emails for Quiz Notification</h2>
+<p>Topic understood: <strong>{{ topic }}</strong></p>
+
+<form method="post">
+    {% csrf_token %}
+    <label for="student_email">Student Email:</label>
+    <input type="email" name="student_email" required><br><br>
+
+    <label for="parent_email">Parent Email:</label>
+    <input type="email" name="parent_email" required><br><br>
+
+    <button type="submit">Proceed to Start Timer</button>
+</form>
+{% endblock %}

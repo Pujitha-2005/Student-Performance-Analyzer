@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container text-center mt-5">
+    <h2>⏳ Get Ready!</h2>
+    <p>Quiz on: <strong>{{ request.session.selected_topic }}</strong></p>
+    <p>Starting in: <span id="timer"></span></p>
+  </div>
+
+  <script>
+    const countdownEnd = new Date("{{ end_time }}").getTime();
+    const timerEl = document.getElementById('timer');
+
+    const x = setInterval(function () {
+      const now = new Date().getTime();
+      const distance = countdownEnd - now;
+
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      timerEl.innerHTML = seconds + "s";
+
+      if (distance < 0) {
+        clearInterval(x);
+        window.location.href = "{% url 'start_quiz' %}";
+      }
+    }, 1000);
+  </script>
+{% endblock %}

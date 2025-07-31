@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>Exam Preparation Countdown</h2>
+
+  <p>Student: {{ student_email }}</p>
+  <p>Parent: {{ parent_email }}</p>
+
+  <div id="countdown" style="font-size: 24px; margin: 20px 0;"></div>
+
+  <script>
+    let countdownTime = {{ countdown_seconds }};
+    const countdown = document.getElementById('countdown');
+
+    function updateCountdown() {
+      const minutes = Math.floor(countdownTime / 60);
+      const seconds = countdownTime % 60;
+      countdown.innerHTML = `${minutes}m ${seconds}s`;
+
+      if (countdownTime <= 0) {
+        clearInterval(timer);
+        countdown.innerHTML = "Time's up! Redirecting to assessment...";
+        window.location.href = "{% url 'start_assessment' %}";
+      }
+
+      countdownTime--;
+    }
+
+    const timer = setInterval(updateCountdown, 1000);
+    updateCountdown();
+  </script>
+{% endblock %}

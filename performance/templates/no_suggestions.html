@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Thank You</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            padding: 50px;
+        }
+        .box {
+            max-width: 500px;
+            margin: auto;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #2ecc71;
+        }
+        p {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 18px;
+            background-color: #e67e22;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .btn:hover {
+            background-color: #d35400;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <h2>🙏 Thank You!</h2>
+    <p>If you need any help, I’m always here to assist you!</p>
+    <a class="btn" href="{% url 'logout_user' %}">Logout</a>
+</div>
+</body>
+</html>

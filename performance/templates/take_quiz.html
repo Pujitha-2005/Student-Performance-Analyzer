@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <h2>📝 Quiz on "{{ request.session.topic }}"</h2>
+  <form method="POST" action="{% url 'submit_quiz' %}">
+    {% csrf_token %}
+    {% for q in quiz %}
+      <div class="my-3">
+        <strong>Q{{ forloop.counter }}. {{ q.question }}</strong><br>
+        {% for opt in q.options %}
+          <label><input type="radio" name="q{{ forloop.parentloop.counter0 }}" value="{{ opt }}" required> {{ opt }}</label><br>
+        {% endfor %}
+      </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-success">Submit Quiz</button>
+  </form>
+</div>
+{% endblock %}

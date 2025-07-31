@@ -1,0 +1,17 @@
+<!-- templates/topic_suggestion.html -->
+{% extends 'base.html' %}
+{% block content %}
+  <h2>Enter a topic you want help with</h2>
+
+  {% if messages %}
+    {% for message in messages %}
+      <p style="color:red;">{{ message }}</p>
+    {% endfor %}
+  {% endif %}
+
+  <form method="POST">
+    {% csrf_token %}
+    <input type="text" name="topic" placeholder="Enter topic here" required>
+    <button type="submit">Get Suggestions</button>
+  </form>
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %} {# <-- Block content starts here #}
+<div class="container my-5 py-5">
+    <div class="card shadow-lg border-0 rounded-lg mx-auto" style="max-width: 550px;">
+        <div class="card-header bg-primary text-white text-center py-4 rounded-top">
+            <h2 class="mb-0 display-5 font-weight-bold">📧 Email Details & Weak Topic</h2>
+            <p class="lead mb-0 mt-2">Provide your email addresses and specify a topic for personalized assessment.</p>
+        </div>
+        <div class="card-body p-5">
+            {% if messages %}
+                <div class="mb-4">
+                    {% for message in messages %}
+                        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="mb-4">
+                    <label for="student_email" class="form-label fw-bold text-dark">Student Email:</label>
+                    <input type="email" name="student_email" id="student_email" class="form-control form-control-lg" required placeholder="your.email@example.com">
+                </div>
+
+                <div class="mb-4">
+                    <label for="parent_email" class="form-label fw-bold text-dark">Parent Email:</label>
+                    <input type="email" name="parent_email" id="parent_email" class="form-control form-control-lg" required placeholder="parent.email@example.com">
+                </div>
+
+                <div class="mb-5">
+                    <label for="topic" class="form-label fw-bold text-dark">Enter Your Weak Topic:</label>
+                    <input type="text" name="topic" id="topic" class="form-control form-control-lg" required placeholder="e.g., Python Basics, Data Structures, Web Development">
+                    <small class="form-text text-muted">This topic will be used to generate your personalized quiz.</small>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-success btn-lg shadow-sm animate-button">🚀 Start Assessment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{# Custom CSS for additional professional styling #}
+<style>
+    body {
+        background-color: #f0f2f5; /* Light grey-blue background */
+        font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    .card {
+        background-color: #ffffff;
+        border-radius: 15px; /* More rounded corners for modern look */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Deeper shadow */
+        overflow: hidden; /* Ensures rounded corners clip content */
+    }
+    .card-header {
+        background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); /* Gradient background */
+        border-bottom: none; /* Remove default border */
+    }
+    .display-5 {
+        font-size: 2.2rem;
+        letter-spacing: 0.5px;
+    }
+    .lead {
+        font-size: 1.15rem;
+        opacity: 0.9;
+    }
+    .form-label {
+        font-size: 1.05rem;
+    }
+    .form-control-lg {
+        padding: 0.75rem 1.25rem;
+        border-radius: 8px; /* Slightly more rounded inputs */
+        border: 1px solid #ced4da;
+    }
+    .form-control-lg:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+    }
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+        font-weight: bold;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        padding: 0.8rem 1.5rem; /* Larger button padding */
+        border-radius: 8px; /* Rounded button */
+    }
+    .btn-success:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+        transform: translateY(-2px); /* Subtle lift on hover */
+        box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3); /* Green shadow on hover */
+    }
+    .btn-success:active {
+        transform: translateY(0); /* Reset on click */
+    }
+
+    /* Custom animation for the button */
+    .animate-button {
+        animation: pulse 2s infinite ease-in-out; /* Add a subtle pulse animation */
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.02); }
+        100% { transform: scale(1); }
+    }
+</style>
+{% endblock %} {# <-- Block content ends here #}

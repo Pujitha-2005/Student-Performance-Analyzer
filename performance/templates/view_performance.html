@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="max-width: 500px; margin: 80px auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); font-family: 'Segoe UI', sans-serif;">
+
+    <h2 style="text-align: center; color: #2c3e50; margin-bottom: 30px;">🎓 Enter Roll Number</h2>
+
+    {% if error %}
+        <p style="color: crimson; font-weight: bold; text-align: center;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST" action="{% url 'check_roll_number' %}" style="text-align: center;">
+        {% csrf_token %}
+        <input type="text" name="roll_no" placeholder="Enter Roll Number" required
+               style="padding: 12px; width: 80%; border-radius: 6px; border: 1px solid #ccc; margin-bottom: 20px;">
+        <br>
+        <button type="submit"
+                style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
+            ✅ Check
+        </button>
+    </form>
+
+    <div style="margin-top: 30px; text-align: center;">
+        <a href="{% url 'dashboard' %}" style="color: #007bff;">🔙 Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

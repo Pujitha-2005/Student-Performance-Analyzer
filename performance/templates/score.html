@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Score</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f8f9fa;
+            padding: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        table {
+            border-collapse: collapse;
+            width: 50%;
+            margin-top: 20px;
+            background: #fff;
+        }
+        th, td {
+            border: 1px solid #aaa;
+            text-align: center;
+            padding: 10px;
+        }
+        th {
+            background: #eaeaea;
+        }
+        .chart {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>📊 Score Overview for Roll No: {{ roll_number }}</h2>
+
+    <div class="chart">
+        <img src="{{ chart }}" alt="Pie Chart">
+    </div>
+
+    <h3>📋 Subject-wise Marks</h3>
+    <table>
+        <tr>
+            <th>Subject</th>
+            <th>Marks</th>
+        </tr>
+        {% for subject, mark in score_table %}
+        <tr>
+            <td>{{ subject }}</td>
+            <td>{{ mark }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br><br>
+    <a href="{% url 'after_performance' %}">⬅️ Back to Dashboard</a>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container mt-5">
+    <h2>💡 Topic Suggestions</h2>
+    <form method="post">
+      {% csrf_token %}
+      <input type="text" name="topic" placeholder="Enter a weak topic" class="form-control mb-3" required>
+      <button type="submit" class="btn btn-primary">Get Suggestion</button>
+    </form>
+
+    {% if topic %}
+      <div class="alert alert-info mt-4">
+        <strong>Topic:</strong> {{ topic }}<br>
+        <strong>Suggestion:</strong> {{ suggestion }}
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

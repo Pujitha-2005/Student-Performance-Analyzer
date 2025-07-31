@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f6f9; padding: 30px; min-height: 100vh;">
+
+    <!-- Header & Button -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 style="color: #b30000; font-size: 28px;">📉 List of Slow Learners</h2>
+        <a href="{% url 'dashboard' %}"
+           style="background-color: #007bff; color: white; padding: 10px 16px; text-decoration: none; border-radius: 6px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            🔙 Back to Dashboard
+        </a>
+    </div>
+
+    <!-- Message -->
+    {% if message %}
+        <p style="color: green; font-weight: bold;">{{ message }}</p>
+    {% endif %}
+
+    <!-- Table Section -->
+    <div style="background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); overflow-x: auto;">
+        {% if learners %}
+            <style>
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-size: 14px;
+                    margin-top: 10px;
+                }
+
+                th, td {
+                    padding: 12px 14px;
+                    border: 1px solid #ddd;
+                    text-align: center;
+                }
+
+                th {
+                    background-color: #f0f0f0;
+                    color: #333;
+                    font-weight: bold;
+                }
+
+                tr:nth-child(even) {
+                    background-color: #fafafa;
+                }
+
+                tr:hover {
+                    background-color: #e6f7ff;
+                }
+            </style>
+
+            <!-- Render the HTML table directly -->
+            {{ learners|safe }}
+        {% else %}
+            <p style="text-align: center; font-style: italic; color: #555;">No slow learners found.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="text-align: center; margin-top: 50px;">
+    <h2>📚 Which topic do you find difficult?</h2>
+    <form method="post" action="{% url 'provide_content' %}">
+        {% csrf_token %}
+        <input type="text" name="topic" placeholder="Enter topic name" required style="padding: 10px; width: 300px;">
+        <br><br>
+        <button type="submit" style="padding: 10px 20px;">Submit</button>
+    </form>
+</div>
+{% endblock %}

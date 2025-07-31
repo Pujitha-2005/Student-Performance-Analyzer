@@ -1,0 +1,15 @@
+<h2>Explanation for: {{ topic }}</h2>
+<div style="white-space: pre-line;">{{ explanation }}</div>
+
+<form method="post">
+  {% csrf_token %}
+  <p>Did you understand the topic?</p>
+  <button type="submit" name="understood" value="yes">✅ Yes</button>
+  <button type="submit" name="understood" value="no">❌ No</button>
+</form>
+
+{% if messages %}
+  {% for message in messages %}
+    <p style="color:red;">{{ message }}</p>
+  {% endfor %}
+{% endif %}

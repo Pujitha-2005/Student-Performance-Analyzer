@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5 py-5"> {# Increased vertical padding and margin #}
+    <div class="card shadow-lg border-0 rounded-lg mx-auto quiz-card-main"> {# Professional card style for main container #}
+        <div class="card-header bg-gradient-quiz text-white text-center py-4 rounded-top"> {# Stylish header with gradient #}
+            <h2 class="mb-0 display-5 font-weight-bold">
+                📝 Quiz on <span class="text-warning-light">"{{ topic|title }}"</span>
+            </h2>
+            <p class="lead mb-0 mt-2">Test your understanding with these multiple-choice questions.</p>
+        </div>
+        <div class="card-body p-5"> {# Generous padding inside card body #}
+
+            <form method="POST" action="{% url 'submit_quiz' %}">
+                {% csrf_token %}
+                {% for q in questions %}
+                    {# Each question in a separate card for better organization #}
+                    <div class="card mb-4 shadow-sm question-card animate-fade-in"> 
+                        <div class="card-body">
+                            <p class="mb-3 fs-5 question-text">
+                                <strong>Q{{ forloop.counter }}.</strong> {{ q.question }}
+                            </p>
+                            {% for opt in q.options %}
+                                <div class="form-check custom-radio-check mb-2">
+                                    {# Corrected value to use opt directly, assuming opt is the full string value #}
+                                    <input class="form-check-input" type="radio"
+                                           name="q{{ q.id }}" {# Use q.id for unique question naming #}
+                                           id="q{{ q.id }}_opt{{ forloop.counter }}" {# Unique ID for label linking #}
+                                           value="{{ opt }}" required>
+                                    <label class="form-check-label" for="q{{ q.id }}_opt{{ forloop.counter }}">
+                                        {{ forloop.counter|add:'64'|chr }}. {{ opt }} {# Displays A, B, C, D #}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <div class="text-center mt-5">
+                    <button type="submit" class="btn btn-primary btn-lg shadow-lg animate-button">
+                        <i class="fas fa-check-circle me-2"></i> Submit Quiz
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{# Custom CSS for professional & attractive styling #}
+<style>
+    body {
+        background-color: #e6f7ff; /* Lighter, calming blue background */
+        font-family: 'Montserrat', sans-serif; /* Modern, clean font */
+    }
+    .quiz-card-main {
+        border-radius: 15px;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18); /* Deeper shadow for main card */
+        overflow: hidden;
+    }
+    .card-header {
+        border-bottom: none;
+        border-radius: 15px 15px 0 0;
+    }
+    .bg-gradient-quiz {
+        background: linear-gradient(135deg, #4CAF50 0%, #2196F3 100%); /* Green to Blue Gradient */
+    }
+    .display-5 {
+        font-size: 2.5rem;
+        letter-spacing: 0.8px;
+    }
+    .text-warning-light { /* Custom class for bright topic highlight */
+        color: #ffeb3b !important; /* Bright yellow */
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    }
+    .lead {
+        font-size: 1.15rem;
+        opacity: 0.9;
+    }
+
+    .question-card {
+        border-left: 6px solid #007bff; /* Blue accent border */
+        border-radius: 10px;
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+    .question-card:hover {
+        transform: translateY(-3px); /* Subtle lift */
+        box-shadow: 0 6px 15px rgba(0, 123, 255, 0.2); /* Soft blue shadow on hover */
+    }
+    .question-text {
+        color: #34495e; /* Darker text for questions */
+        font-weight: 600;
+        line-height: 1.5;
+    }
+    .custom-radio-check {
+        margin-left: 20px; /* Indent options */
+    }
+    .form-check-label {
+        font-size: 1.05rem;
+        color: #555;
+        cursor: pointer; /* Indicate clickable */
+        padding-left: 5px; /* Space between radio and text */
+    }
+    .form-check-input {
+        transform: scale(1.2); /* Slightly larger radio buttons */
+        margin-right: 10px; /* Space from label */
+    }
+    .form-check-input:checked + .form-check-label {
+        font-weight: bold;
+        color: #007bff; /* Highlight selected option */
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        font-weight: bold;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        padding: 0.9rem 2.5rem; /* Larger button padding */
+        border-radius: 8px; /* Rounded button */
+        font-size: 1.3rem; /* Larger font size for button */
+    }
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+        transform: translateY(-3px); /* Subtle lift on hover */
+        box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3); /* Blue shadow on hover */
+    }
+    .btn-primary:active {
+        transform: translateY(0);
+        box-shadow: none;
+    }
+
+    /* Animations */
+    .animate-fade-in {
+        animation: fadeIn 0.8s ease-out;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-button {
+        animation: pulse 2s infinite ease-in-out;
+    }
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.02); }
+        100% { transform: scale(1); }
+    }
+</style>
+{% endblock %}

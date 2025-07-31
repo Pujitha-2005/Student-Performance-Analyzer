@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+  <h3>📚 Suggestion for: {{ topic }}</h3>
+  <pre class="bg-light p-3 border rounded">{{ suggestion }}</pre>
+  <form action="{% url 'logout_user' %}">
+    <button class="btn btn-success mt-3">Logout</button>
+  </form>
+</div>
+{% endblock %}

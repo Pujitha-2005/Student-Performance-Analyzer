@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5 py-4 bg-white rounded-lg shadow-lg"> {# Added styling for the main container #}
+    <h2 class="text-center mb-4 display-4 text-primary font-weight-bold">
+        🧠 Explanation for: <span class="text-info">{{ topic|title }}</span> {# Changed to text-info for contrast #}
+    </h2>
+
+    {% if error %}
+        <div class="alert alert-danger alert-dismissible fade show mt-4 text-center" role="alert">
+            ❌ {{ error }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% else %}
+        <div class="card mt-4 mb-4 border-0 shadow-sm custom-explanation-card"> {# Custom card styling #}
+            <div class="card-body p-4">
+                {# Preserve whitespace, but adjust font size for better readability #}
+                <p class="explanation-text lead">{{ explanation|safe }}</p> {# Use |safe if explanation can contain HTML, otherwise remove #}
+            </div>
+        </div>
+
+        <h4 class="text-center my-4 text-secondary">Did you understand this explanation?</h4> {# More prominent question #}
+
+        <div class="d-flex justify-content-center mb-5"> {# Centered buttons with spacing #}
+            <form method="post" action="{% url 'confirm_understanding' %}" class="me-3"> {# Added me-3 for right margin #}
+                {% csrf_token %}
+                <input type="hidden" name="feedback" value="no"> {# Changed value from 'understood' to 'feedback' and 'no' #}
+                <input type="hidden" name="topic" value="{{ topic }}"> {# Pass topic for rephrase #}
+                <button type="submit" class="btn btn-warning btn-lg shadow-sm custom-btn-retry">
+                    🔄 No, explain again
+                </button>
+            </form>
+
+            <form method="post" action="{% url 'confirm_understanding' %}" class="">
+                {% csrf_token %}
+                <input type="hidden" name="feedback" value="yes"> {# Changed value from 'understood' to 'feedback' and 'yes' #}
+                <input type="hidden" name="topic" value="{{ topic }}"> {# Pass topic for redirect #}
+                <button type="submit" class="btn btn-success btn-lg shadow-sm custom-btn-understood">
+                    ✅ Yes, I understand
+                </button>
+            </form>
+        </div>
+    {% endif %}
+
+    <div class="text-center mt-5 pt-3 border-top"> {# Added border-top for visual separation #}
+        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary btn-lg">🏠 Back to Dashboard</a>
+    </div>
+</div>
+
+{# Custom CSS for additional styling #}
+<style>
+    body {
+        background-color: #e0f2f7; /* Light blue background */
+    }
+    .container {
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Stronger shadow */
+    }
+    .display-4 {
+        font-size: 2.8rem; /* Slightly smaller for better fit */
+    }
+    .custom-explanation-card {
+        border-left: 5px solid #007bff; /* Blue accent border */
+        transition: transform 0.2s ease-in-out;
+    }
+    .custom-explanation-card:hover {
+        transform: translateY(-5px); /* Subtle hover effect */
+    }
+    .explanation-text {
+        font-family: 'Georgia', serif; /* More readable font */
+        line-height: 1.8; /* Increased line height */
+        color: #343a40; /* Darker text for readability */
+        font-size: 1.15rem; /* Slightly larger text */
+    }
+    .custom-btn-retry,
+    .custom-btn-understood {
+        min-width: 220px; /* Ensure buttons have a consistent minimum width */
+        font-weight: bold;
+        transition: all 0.3s ease;
+        letter-spacing: 0.5px;
+    }
+    .custom-btn-retry:hover {
+        transform: scale(1.05); /* Slight zoom on hover */
+        box-shadow: 0 4px 10px rgba(255, 193, 7, 0.4); /* Yellow shadow on hover */
+    }
+    .custom-btn-understood:hover {
+        transform: scale(1.05); /* Slight zoom on hover */
+        box-shadow: 0 4px 10px rgba(40, 167, 69, 0.4); /* Green shadow on hover */
+    }
+    .btn-outline-secondary:hover {
+        background-color: #6c757d !important; /* Ensure background changes on hover */
+        color: white !important;
+    }
+</style>
+{% endblock %}

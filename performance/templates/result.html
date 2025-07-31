@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5 text-center">
+  <h2 class="mb-4">🎯 Quiz Result</h2>
+
+  <p><strong>Score:</strong> {{ score }} / 15</p>
+
+  {% if improved %}
+    <div class="alert alert-success">
+      ✅ Great! You have improved your performance. Keep it up!
+    </div>
+  {% else %}
+    <div class="alert alert-warning">
+      ⚠️ Your performance hasn't improved. An email has been sent to your parent.
+    </div>
+  {% endif %}
+
+  <a href="{% url 'logout_user' %}" class="btn btn-danger mt-3">Logout</a>
+</div>
+{% endblock %}

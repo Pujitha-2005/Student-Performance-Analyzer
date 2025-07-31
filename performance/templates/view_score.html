@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="max-width: 700px; margin: 50px auto; text-align: center;">
+
+    <h2>📊 Score Report for {{ rollno }}</h2>
+
+    <img src="{{ chart_url }}" alt="Score Pie Chart" style="max-width: 100%; height: auto; margin-top: 30px;">
+
+    <h3 style="margin-top: 40px;">📋 Subject-wise Marks</h3>
+    <div style="margin-top: 20px;">
+        {{ html_table|safe }}
+    </div>
+
+    <br><br>
+    <a href="{% url 'dashboard' %}" style="color: #007bff;">🔙 Back to Dashboard</a>
+
+</div>
+{% endblock %}
